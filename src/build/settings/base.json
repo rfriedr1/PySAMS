@@ -1,0 +1,6 @@
+{
+    "app_name": "PySAMS",
+    "author": "Ronny Friedrich",
+    "main_module": "src/main/python/PySAMS/main.py",
+    "version": "0.0.1"
+}
