@@ -9,7 +9,7 @@ import pandas.io.sql as sql
 from pandas import DataFrame
 import PyQt5.QtSql as QtSql
 import PyQt5.QtWidgets as QtWidgets
-import config.config as config
+from config.config import myconfig  # myconfig calss will be loaded here
 
 # set logger name to the name of the module
 logger.name = __name__
@@ -36,7 +36,7 @@ def query_db(query):
     # database configuration parameters
     logger.debug('run function: query_db')
     # get myconfig object instance from config module
-    myconfig = config.myconfig
+    #myconfig = config.myconfig
 
     # db_params = {
     #     'user': 'mams',
@@ -327,7 +327,7 @@ class MyDatabase:
 
         # get myconfig object instance from the config.py
         logger.debug('read db settings from the config class')
-        myconfig = config.myconfig
+        #myconfig = config.myconfig
 
         self.dbtype = 'MYSQL'
         logger.debug('set db type to: ' + self.dbtype)

@@ -14,6 +14,8 @@ from ui.SplashScreen import MySplashScreen
 from database.pysamsdb import *  # this is the already instantiated MyDatabase object connecting the the AMS DB
 import PyQt5.QtCore as QtCore
 import PyQt5.QtWidgets as QtWidgets
+from config.config import myconfig
+from config.logging_conf import logger
 
 __version__ = '2022-July-06'
 __author__ = 'Ronny Friedrich'
@@ -188,10 +190,10 @@ class PySAMS(QMainWindow):
         splash.showMessage(splash.message() + '\n' + 'loading config data...',
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
         appctxt.app.processEvents()
+        
         # get configuration-file object from the config.py file
         logger.debug('get config object')
-
-        myconfig = config.myconfig  # config.myconfig is a variable that already has the MyConfig Object
+        # myconfig = config.myconfig  # config.myconfig is a variable that already has the MyConfig Object
         logger.debug('check whether config data are present')
         if myconfig.checkconfig():
             logger.debug('checkconfig = True')
@@ -200,7 +202,7 @@ class PySAMS(QMainWindow):
             appctxt.app.processEvents()
         else:
             logger.debug('checkconfig = False')
-            splash.showMessage(splash.message() + '\n' + 'config data are missing',
+            splash.showMessage(splash.message() + '\n' + 'config data are missing, writing default',
                                QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
             appctxt.app.processEvents()
 

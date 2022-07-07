@@ -35,7 +35,12 @@ class MyConfig(configparser.ConfigParser):
 
         # check if everything is fine with the config file
         # also reads the config file
-        if self.checkconfig():
+        if self.checkconfig() == False:
+            self.writedefaultconfig()   # write default values
+            if self.checkconfig():      # check again
+               pass
+        else:
+            # everything is fine
             pass
 
     def checkconfig(self):
@@ -79,12 +84,31 @@ class MyConfig(configparser.ConfigParser):
 
     def writedefaultconfig(self):
         """
-        create a new confog file and write the default values
+        create a new config file and write the default values
 
         Returns:
             None
 
         """
+        logger.debug('create default config file')
+        if os.path.isfile(self.config_file_path):
+            logger.debug('config file already exists')
+        else:
+            logger.debug("config file doesn't exists")
+            f = open(self.config_file_path, 'w')
+            f.write('[database]\r')
+            f.write('dbhost = 192.168.123.30\r')
+            f.write('dbuser = mams\r')
+            f.write('dbpasswd = Micadas.1\r')
+            f.write('dbname = db_dmams\r')
+            f.write('[paths]\r')
+            f.write('path_to_reports_on_server =\r')
+            f.write('path_to_reports_templates =\r')
+            f.write('path_to_reports_local =\r')
+            f.write('path_to_images_in_server =\r')
+            f.write('path_to_docs_on_server =\r')
+            f.close()
+            logger.debug('default values in config written')
 
 
 # already instantiate the MyConfig Object here
