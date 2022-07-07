@@ -416,6 +416,8 @@ if __name__ == "__main__":
         sys.exit(app.exec_())
     else:
         appctxt = ApplicationContext()
+        appctxt.app.setStyle('Breeze')
+        
         # =======================================================================
         # add splash screen
         splash = MySplashScreen()  # instantiate the splash screen, appearance is set during init of the object
@@ -427,15 +429,16 @@ if __name__ == "__main__":
                         QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
         splash.showMessage(splash.message() + '\n' + 'Platform ' + sys.platform,
                         QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        
         # =======================================================================
         # create and start the application
-        mainwindow = PySAMS()
+        main = PySAMS()
         logger.debug('library paths: ' + ', '.join(appctxt.app.libraryPaths()))  # log paths to libraries
         
-                # =======================================================================
+        # =======================================================================
         # kill the splashscreen as soon as the main window is available
-        splash.finish(mainwindow)
-
-        appctxt.app.setStyle("Fusion")
-        sys.exit(appctxt.app.exec_())
+        splash.finish(main)
+        
+        exit_code = appctxt.app.exec_()
+        sys.exit(exit_code)
 
