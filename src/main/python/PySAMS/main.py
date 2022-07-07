@@ -5,6 +5,7 @@ Main App of the PySAMS
 import sys
 import time
 
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QMainWindow
 from ui.menubar import MyMenuBar
 from ui.toolbar import MyToolBar
@@ -87,7 +88,7 @@ class PySAMS(QMainWindow):
         logger.info('establishing first database connection')
         splash.showMessage(splash.message() + '\n' + 'establishing database connection',
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-        app.processEvents()
+        appctxt.app.processEvents()
 
         # self.db = pysamsdb.MyDatabase()
         # mydb = MyDatabase()
@@ -96,7 +97,7 @@ class PySAMS(QMainWindow):
         db_vers = str(mydb.get_dbversion())
         splash.showMessage(splash.message() + '\n' + 'found database version: ' + db_vers,
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-        app.processEvents()
+        appctxt.app.processEvents()
 
         # =======================================================================
         # create a tab widget that will be the central widget of the window
@@ -186,7 +187,7 @@ class PySAMS(QMainWindow):
         logger.info('loading config data')
         splash.showMessage(splash.message() + '\n' + 'loading config data...',
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-        app.processEvents()
+        appctxt.app.processEvents()
         # get configuration-file object from the config.py file
         logger.debug('get config object')
 
@@ -196,12 +197,12 @@ class PySAMS(QMainWindow):
             logger.debug('checkconfig = True')
             splash.showMessage(splash.message() + '\n' + 'config data are present',
                                QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-            app.processEvents()
+            appctxt.app.processEvents()
         else:
             logger.debug('checkconfig = False')
             splash.showMessage(splash.message() + '\n' + 'config data are missing',
                                QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-            app.processEvents()
+            appctxt.app.processEvents()
 
     # =======================================================================
     def create_dashboard_tab(self, parent: QtWidgets.QTabWidget):
@@ -381,31 +382,55 @@ class PySAMS(QMainWindow):
 # MAIN Routine
 # =======================================================================
 if __name__ == "__main__":
-    # =======================================================================
-    # instantiate the PyQT App
-    app = QtWidgets.QApplication(sys.argv)
+    
+    packaging = True  # when using fbs for packing 
 
-    # =======================================================================
-    # add splash screen
-    splash = MySplashScreen()  # instantiate the splash screen, appearance is set during init of the object
-    splash.show()  # display screen
-    app.processEvents()
-    splash.showMessage('starting app', QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-    splash.showMessage(splash.message() + '\n' + 'Python ' + sys.version,
-                       QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-    splash.showMessage(splash.message() + '\n' + 'Platform ' + sys.platform,
-                       QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-    # time.sleep(10)
+    if packaging == False:
+        # =======================================================================
+        # instantiate the PyQT App
+        app = QtWidgets.QApplication(sys.argv)
 
-    # =======================================================================
-    # create and start the application
-    mainwindow = PySAMS()
-    logger.debug('library paths: ' + ', '.join(app.libraryPaths()))  # log paths to libraries
+        # =======================================================================
+        # add splash screen
+        splash = MySplashScreen()  # instantiate the splash screen, appearance is set during init of the object
+        splash.show()  # display screen
+        app.processEvents()
+        splash.showMessage('starting app', QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        splash.showMessage(splash.message() + '\n' + 'Python ' + sys.version,
+                        QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        splash.showMessage(splash.message() + '\n' + 'Platform ' + sys.platform,
+                        QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        # time.sleep(10)
 
-    # =======================================================================
-    # kill the splashscreen as soon as the main window is available
-    splash.finish(mainwindow)
+        # =======================================================================
+        # create and start the application
+        mainwindow = PySAMS()
+        logger.debug('library paths: ' + ', '.join(app.libraryPaths()))  # log paths to libraries
 
-    # =======================================================================
-    # run the App and exit when the App was closed
-    sys.exit(app.exec_())
+        # =======================================================================
+        # kill the splashscreen as soon as the main window is available
+        splash.finish(mainwindow)
+
+        # =======================================================================
+        # run the App and exit when the App was closed
+        sys.exit(app.exec_())
+    else:
+        appctxt = ApplicationContext()
+        # =======================================================================
+        # add splash screen
+        splash = MySplashScreen()  # instantiate the splash screen, appearance is set during init of the object
+        splash.show()  # display screen
+        appctxt.app.processEvents()
+        splash.showMessage('starting app', QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        splash.showMessage(splash.message() + '\n' + 'Python ' + sys.version,
+                        QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        splash.showMessage(splash.message() + '\n' + 'Platform ' + sys.platform,
+                        QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        # =======================================================================
+        # create and start the application
+        mainwindow = PySAMS()
+        logger.debug('library paths: ' + ', '.join(appctxt.app.libraryPaths()))  # log paths to libraries
+        
+        appctxt.app.setStyle("Fusion")
+        sys.exit(appctxt.app.exec_())
+
