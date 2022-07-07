@@ -55,8 +55,8 @@ class PySAMS(QMainWindow):
         #                    QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
         self.title = 'PySAMS v.' + str(__version__)
         logger.debug(self.title)
-        self.left = 10
-        self.top = 10
+        self.left = 30
+        self.top = 30
         self.width = 800
         self.height = 600
         # create window
@@ -419,6 +419,7 @@ if __name__ == "__main__":
         # =======================================================================
         # add splash screen
         splash = MySplashScreen()  # instantiate the splash screen, appearance is set during init of the object
+        splash.resize(500,200)
         splash.show()  # display screen
         appctxt.app.processEvents()
         splash.showMessage('starting app', QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtCore.Qt.white)
@@ -431,6 +432,10 @@ if __name__ == "__main__":
         mainwindow = PySAMS()
         logger.debug('library paths: ' + ', '.join(appctxt.app.libraryPaths()))  # log paths to libraries
         
+                # =======================================================================
+        # kill the splashscreen as soon as the main window is available
+        splash.finish(mainwindow)
+
         appctxt.app.setStyle("Fusion")
         sys.exit(appctxt.app.exec_())
 
