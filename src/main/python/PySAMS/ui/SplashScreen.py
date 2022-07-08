@@ -29,6 +29,7 @@ class MySplashScreen(QtWidgets.QSplashScreen):
         # self.setWindowTitle('Startup PySAMS')
         # read image that is used for the splash screen background
         splash_pix = QtGui.QPixmap('ui/icons/PySamsSplash.png')
+        # splash_pix = QtGui.QPixmap(appctxt.get_resource('PySamsSplash.png'))  #when packing with fbs resources are loaded like this
         # the splash screens background
         self.setPixmap(splash_pix)
         # make the splash screen sit on top

@@ -418,7 +418,9 @@ if __name__ == "__main__":
         sys.exit(app.exec_())
     else:
         appctxt = ApplicationContext()
-        appctxt.app.setStyle('Breeze')
+        # stylesheet = appctxt.get_resource('styles.qss')
+        # appctxt.app.setStyleSheet(open(stylesheet).read())
+        # appctxt.app.setStyle('Breeze')
         
         # =======================================================================
         # add splash screen
